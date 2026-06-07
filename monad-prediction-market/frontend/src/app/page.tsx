@@ -132,8 +132,8 @@ export default function Home() {
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`rounded-full px-5 py-2 text-xs font-semibold transition-all duration-200 ${isActive
-                    ? "bg-black text-white shadow-sm"
-                    : "text-gray-500 hover:text-black hover:bg-gray-100"
+                  ? "bg-black text-white shadow-sm"
+                  : "text-gray-500 hover:text-black hover:bg-gray-100"
                   }`}
               >
                 {tab}
@@ -259,25 +259,23 @@ export default function Home() {
               <h2 className="text-xl font-extrabold text-[#1A1D2D] tracking-tight">Portfolio & Yield</h2>
               <p className="text-xs text-gray-500 mt-1">Track your active predictions, stakes, and claimable yields.</p>
             </div>
-            
+
             <div className="flex items-center gap-3 bg-[#EEF2F6] p-1 rounded-full">
               <button
                 onClick={() => setDemoMode(true)}
-                className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
-                  demoMode
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-900"
-                }`}
+                className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${demoMode
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-500 hover:text-gray-900"
+                  }`}
               >
                 🔮 Demo Sandbox
               </button>
               <button
                 onClick={() => setDemoMode(false)}
-                className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
-                  !demoMode
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-900"
-                }`}
+                className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${!demoMode
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-500 hover:text-gray-900"
+                  }`}
               >
                 🔌 Live EOA Wallet
               </button>
@@ -335,7 +333,7 @@ export default function Home() {
                     <h3 className="text-sm font-extrabold text-[#1A1D2D] uppercase tracking-wider">Active Positions</h3>
                     <span className="text-xs text-gray-400 font-bold bg-[#F8F9FA] px-2 py-1 rounded-lg border border-[#EAEFF4]">3 Open Trades</span>
                   </div>
-                  
+
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                       <thead>
@@ -390,7 +388,7 @@ export default function Home() {
                 <div className="rounded-3xl border border-[#EAEFF4] bg-white p-6 shadow-premium space-y-4 flex flex-col justify-between">
                   <div className="space-y-4">
                     <h3 className="text-sm font-extrabold text-[#1A1D2D] uppercase tracking-wider">Settlements Ledger</h3>
-                    
+
                     <div className="space-y-3.5">
                       {/* Settle Ready Win */}
                       <div className="rounded-2xl border border-emerald-500/20 bg-emerald-50/50 p-4 flex flex-col gap-2.5">
@@ -440,7 +438,7 @@ export default function Home() {
               <p className="text-sm text-gray-500 max-w-md mx-auto">
                 Connect your EOA wallet (MetaMask, Coinbase Wallet, etc.) to view your real-time on-chain balances and positions on the Monad testnet.
               </p>
-              
+
               <div className="pt-6 border-t border-[#EEF2F6] flex justify-around text-left">
                 <div>
                   <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">Connected Account</span>

@@ -112,21 +112,19 @@ export function AdminPanel({ markets }: Props) {
               <div className="flex bg-[#F1F5F9] p-1 rounded-full border border-gray-200">
                 <button
                   onClick={() => setOutcome(m.address, true)}
-                  className={`rounded-full px-4 py-1.5 text-xs font-bold tracking-wide transition ${
-                    outcomeFor(m.address)
+                  className={`rounded-full px-4 py-1.5 text-xs font-bold tracking-wide transition ${outcomeFor(m.address)
                       ? "bg-[#5F45FF] text-white shadow-sm"
                       : "text-gray-500 hover:text-gray-800"
-                  }`}
+                    }`}
                 >
                   YES
                 </button>
                 <button
                   onClick={() => setOutcome(m.address, false)}
-                  className={`rounded-full px-4 py-1.5 text-xs font-bold tracking-wide transition ${
-                    !outcomeFor(m.address)
+                  className={`rounded-full px-4 py-1.5 text-xs font-bold tracking-wide transition ${!outcomeFor(m.address)
                       ? "bg-[#FF5656] text-white shadow-sm"
                       : "text-gray-500 hover:text-gray-800"
-                  }`}
+                    }`}
                 >
                   NO
                 </button>

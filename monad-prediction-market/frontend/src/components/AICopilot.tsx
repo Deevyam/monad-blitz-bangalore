@@ -702,13 +702,13 @@ export function AITrendSpotter() {
   function handleDeployRecommend(rec: TrendRecommendation) {
     const date = new Date();
     date.setDate(date.getDate() + rec.durationDays);
-    
+
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
-    
+
     const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
 
     const fillEvent = new CustomEvent("fill-create-market", {
@@ -744,11 +744,10 @@ export function AITrendSpotter() {
               setCustomPrompt("");
             }}
             disabled={scanning}
-            className={`flex-1 rounded-full py-1.5 text-[10px] font-bold tracking-wide transition-all ${
-              activeTab === t.id
+            className={`flex-1 rounded-full py-1.5 text-[10px] font-bold tracking-wide transition-all ${activeTab === t.id
                 ? "bg-white text-gray-900 shadow-sm"
                 : "text-gray-500 hover:text-gray-900"
-            }`}
+              }`}
           >
             {t.label}
           </button>
