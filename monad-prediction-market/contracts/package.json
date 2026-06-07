@@ -1,0 +1,18 @@
+{
+  "name": "monad-prediction-market-contracts",
+  "version": "1.0.0",
+  "description": "Parallel prediction market contracts for Monad testnet",
+  "license": "MIT",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.ts --network monad",
+    "demo": "hardhat run scripts/demo-resolve-many.ts --network monad"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.10",
+    "typescript": "^5.5.4"
+  }
+}
