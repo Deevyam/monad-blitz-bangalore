@@ -103,9 +103,19 @@ export async function POST(req: Request) {
 
     if (detectedCoin.id && detectedCoin.id !== "monad") {
       try {
+        const apiKey = process.env.COINGECKO_API_KEY;
+        const baseUrl = apiKey ? "https://demo-api.coingecko.com/api/v3" : "https://api.coingecko.com/api/v3";
+        const headers: Record<string, string> = {};
+        if (apiKey) {
+          headers["x-cg-demo-api-key"] = apiKey;
+        }
+
         const cgRes = await fetch(
-          `https://api.coingecko.com/api/v3/simple/price?ids=${detectedCoin.id}&vs_currencies=usd&include_24hr_change=true`,
-          { next: { revalidate: 60 } }
+          `${baseUrl}/simple/price?ids=${detectedCoin.id}&vs_currencies=usd&include_24hr_change=true`,
+          { 
+            headers,
+            next: { revalidate: 60 } 
+          }
         );
         if (cgRes.ok) {
           const data = await cgRes.json();
