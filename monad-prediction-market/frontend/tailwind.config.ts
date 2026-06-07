@@ -20,7 +20,16 @@ const config: Config = {
       boxShadow: {
         'premium': '0 8px 30px rgb(0,0,0,0.03)',
         'premium-hover': '0 12px 40px rgb(0,0,0,0.06)',
-      }
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(4px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.2s ease-out forwards',
+      },
     },
   },
   plugins: [],

@@ -76,6 +76,54 @@ function parseGoogleNewsRSS(xml: string) {
   return items;
 }
 
+async function fetchCoinGeckoPrice(coinId: string, apiKey: string | undefined) {
+  // We try endpoints in order of reliability.
+  // api.coingecko.com resolves and works locally.
+  const endpoints = [
+    "https://api.coingecko.com/api/v3",
+    "https://demo-api.coingecko.com/api/v3"
+  ];
+
+  for (const baseUrl of endpoints) {
+    try {
+      const headers: Record<string, string> = {};
+      if (apiKey) {
+        headers["x-cg-demo-api-key"] = apiKey;
+      }
+      
+      const res = await fetch(
+        `${baseUrl}/simple/price?ids=${coinId}&vs_currencies=usd&include_24hr_change=true`,
+        { 
+          headers,
+          next: { revalidate: 60 } 
+        }
+      );
+
+      if (res.ok) {
+        const text = await res.text();
+        try {
+          const data = JSON.parse(text);
+          const coinData = data[coinId];
+          if (coinData && typeof coinData.usd === "number") {
+            return {
+              priceUsd: coinData.usd,
+              change24h: coinData.usd_24h_change ?? 0,
+              success: true
+            };
+          }
+        } catch (jsonErr) {
+          console.warn(`Failed to parse JSON from ${baseUrl}:`, jsonErr, "Response text was:", text.substring(0, 200));
+        }
+      } else {
+        console.warn(`CoinGecko response not ok from ${baseUrl}: status ${res.status}`);
+      }
+    } catch (err) {
+      console.warn(`CoinGecko fetch failed from ${baseUrl}:`, err);
+    }
+  }
+  return { priceUsd: 0, change24h: 0, success: false };
+}
+
 export async function POST(req: Request) {
   try {
     const { question } = await req.json();
@@ -102,32 +150,12 @@ export async function POST(req: Request) {
     let priceString = "N/A";
 
     if (detectedCoin.id && detectedCoin.id !== "monad") {
-      try {
-        const apiKey = process.env.COINGECKO_API_KEY;
-        const baseUrl = apiKey ? "https://demo-api.coingecko.com/api/v3" : "https://api.coingecko.com/api/v3";
-        const headers: Record<string, string> = {};
-        if (apiKey) {
-          headers["x-cg-demo-api-key"] = apiKey;
-        }
-
-        const cgRes = await fetch(
-          `${baseUrl}/simple/price?ids=${detectedCoin.id}&vs_currencies=usd&include_24hr_change=true`,
-          { 
-            headers,
-            next: { revalidate: 60 } 
-          }
-        );
-        if (cgRes.ok) {
-          const data = await cgRes.json();
-          const coinData = data[detectedCoin.id];
-          if (coinData) {
-            priceUsd = coinData.usd ?? 0;
-            change24h = coinData.usd_24h_change ?? 0;
-            priceString = `$${priceUsd.toLocaleString(undefined, { minimumFractionDigits: 2 })} (${change24h >= 0 ? "+" : ""}${change24h.toFixed(2)}% 24h)`;
-          }
-        }
-      } catch (e) {
-        console.error("CoinGecko fetch failed:", e);
+      const apiKey = process.env.COINGECKO_API_KEY;
+      const res = await fetchCoinGeckoPrice(detectedCoin.id, apiKey);
+      if (res.success) {
+        priceUsd = res.priceUsd;
+        change24h = res.change24h;
+        priceString = `$${priceUsd.toLocaleString(undefined, { minimumFractionDigits: 2 })} (${change24h >= 0 ? "+" : ""}${change24h.toFixed(2)}% 24h)`;
       }
     } else if (detectedCoin.id === "monad") {
       // Custom mocked statistics for Monad testnet
