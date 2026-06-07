@@ -33,7 +33,6 @@ export function BetModal({ market, side, onClose }: Props) {
   const totalPool = market.yesPool + market.noPool;
 
   // Estimated payout if you win:
-  //   (amount + totalPool) / (yourSide + amount) * amount
   const estPayout = useMemo(() => {
     const n = Number(amount);
     if (!Number.isFinite(n) || n <= 0) return null;
@@ -59,86 +58,93 @@ export function BetModal({ market, side, onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-2xl border border-monad-border bg-monad-panel p-6 shadow-2xl"
+        className="w-full max-w-md rounded-3xl border border-[#EAEFF4] bg-white p-6 shadow-2xl animate-fadeIn"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Modal Header */}
         <div className="mb-4 flex items-start justify-between">
-          <h2 className="text-lg font-bold">
-            Betting{" "}
-            <span className={side ? "text-monad-purple" : "text-monad-coral"}>
+          <h2 className="text-lg font-extrabold text-gray-900 tracking-tight">
+            Betting{"  "}
+            <span className={`px-3 py-1 rounded-full text-xs font-bold ${side ? "bg-[#5F45FF]/10 text-[#5F45FF]" : "bg-[#FF5656]/10 text-[#FF5656]"}`}>
               {side ? "YES" : "NO"}
-            </span>{" "}
-            on:
+            </span>
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white"
+            className="text-gray-400 hover:text-gray-900 transition font-bold"
             aria-label="Close"
           >
             ✕
           </button>
         </div>
 
-        <p className="mb-4 text-sm text-gray-300">{market.question}</p>
+        {/* Market Title */}
+        <p className="mb-4 text-sm font-bold text-gray-800 leading-snug">{market.question}</p>
 
-        <div className="mb-4 flex justify-between rounded-lg bg-black/30 px-3 py-2 text-sm">
-          <span className="text-monad-purple">
-            YES {formatMon(market.yesPool)} MON
+        {/* Current Pool Status */}
+        <div className="mb-5 flex justify-between rounded-2xl bg-[#F8F9FA] border border-[#EEF2F6] px-4 py-3 text-xs font-bold">
+          <span className="text-[#5F45FF]">
+            YES: {formatMon(market.yesPool)} MON
           </span>
-          <span className="text-monad-coral">
-            NO {formatMon(market.noPool)} MON
+          <span className="text-[#FF5656]">
+            NO: {formatMon(market.noPool)} MON
           </span>
         </div>
 
-        <label className="mb-1 block text-sm text-gray-400">Amount (MON)</label>
-        <input
-          type="number"
-          min="0"
-          step="0.01"
-          value={amount}
-          onChange={(e) => {
-            setAmount(e.target.value);
-            reset();
-          }}
-          placeholder="0.10"
-          className="mb-3 w-full rounded-xl border border-monad-border bg-black/40 px-4 py-2 outline-none focus:border-monad-purple"
-        />
+        {/* Amount Input */}
+        <div className="space-y-1.5 mb-4">
+          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider">Amount (MON)</label>
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            value={amount}
+            onChange={(e) => {
+              setAmount(e.target.value);
+              reset();
+            }}
+            placeholder="0.10"
+            className="w-full rounded-xl border border-gray-200 bg-[#F8F9FA] px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 outline-none focus:border-[#5F45FF] focus:bg-white focus:ring-1 focus:ring-[#5F45FF] transition"
+          />
+        </div>
 
+        {/* Estimated Returns */}
         {estPayout && (
-          <p className="mb-4 text-sm text-gray-300">
-            Estimated payout if you win:{" "}
-            <span className="font-semibold text-emerald-300">
+          <p className="mb-5 text-xs text-gray-500 font-semibold bg-emerald-50 border border-emerald-100 p-3 rounded-2xl animate-fadeIn flex items-center justify-between">
+            <span>Estimated return if win:</span>
+            <span className="font-extrabold text-emerald-600 text-sm">
               ~{estPayout} MON
             </span>
           </p>
         )}
 
+        {/* Submit Button */}
         <button
           onClick={confirm}
           disabled={!valid || isPending || confirming || isSuccess}
-          className="w-full rounded-xl bg-monad-purple px-4 py-3 font-semibold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+          className="w-full rounded-full bg-black hover:bg-neutral-800 py-3.5 text-xs font-bold text-white transition disabled:opacity-40 active:scale-95 shadow-md"
         >
           {isSuccess
-            ? "Bet placed ✓"
+            ? "Bet Placed ✓"
             : isPending
-              ? "Confirm in wallet…"
+              ? "Confirm in Wallet…"
               : confirming
-                ? "Waiting for block…"
+                ? "Waiting for block confirmation…"
                 : "Confirm Bet"}
         </button>
 
         {error && (
-          <p className="mt-3 text-sm text-red-400">
+          <p className="mt-3 text-xs text-red-600 bg-red-50 border border-red-100 p-2.5 rounded-xl animate-fadeIn">
             {error.message.split("\n")[0]}
           </p>
         )}
         {isSuccess && (
-          <p className="mt-3 text-sm text-emerald-300">
-            Confirmed! Closing…
+          <p className="mt-3 text-xs text-emerald-600 font-semibold text-center animate-fadeIn">
+            Confirmed! Closing shortly…
           </p>
         )}
       </div>

@@ -8,15 +8,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Monad-flavored palette
+        // Redefined for Outcrowd Zentra Light Theme Dashboard
         monad: {
-          purple: "#836EF9",
-          coral: "#FB7185",
-          ink: "#0B0B1A",
-          panel: "#15152B",
-          border: "#26264A",
+          purple: "#5F45FF", // Vibrant royal blue-purple
+          coral: "#FF5656",  // Crisp coral red
+          ink: "#F4F6F9",    // Light slate background
+          panel: "#FFFFFF",  // Pure white card background
+          border: "#EAEFF4", // Soft grey border lines
         },
       },
+      boxShadow: {
+        'premium': '0 8px 30px rgb(0,0,0,0.03)',
+        'premium-hover': '0 12px 40px rgb(0,0,0,0.06)',
+      }
     },
   },
   plugins: [],
